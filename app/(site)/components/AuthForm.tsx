@@ -2,8 +2,11 @@
 
 import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
+import axios from "axios";
+import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import AuthSocialButton from "./AuthSocialButton";
 
@@ -38,13 +41,26 @@ const AuthForm = () => {
 
     try {
       if (variant === "REGISTER") {
-        // register
+        axios
+          .post("/api/register", data)
+          .catch(() => toast.error("Something went wrong!"));
       }
 
       if (variant === "LOGIN") {
         // login
+        signIn("credentials", { ...data, redirect: false }).then((res) => {
+          if (res?.error) {
+            toast.error(res?.error);
+            return;
+          } else if (res?.ok) {
+            toast.success("Logged in successfully!");
+          }
+        });
       }
-    } catch (err) {}
+    } catch (err) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const socialAction = (action: string) => {
