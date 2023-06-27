@@ -64,6 +64,7 @@ const AuthForm = () => {
               type="text"
               register={register}
               errors={errors}
+              disabled={isLoading}
             />
           ) : null}
 
@@ -73,6 +74,7 @@ const AuthForm = () => {
             type="email"
             register={register}
             errors={errors}
+            disabled={isLoading}
           />
 
           <Input
@@ -81,6 +83,7 @@ const AuthForm = () => {
             type="password"
             register={register}
             errors={errors}
+            disabled={isLoading}
           />
 
           <div>
