@@ -7,7 +7,7 @@ interface InputProps {
   type?: string;
   required?: boolean;
   register: UseFormRegister<FieldValues>;
-  errors?: FieldErrors;
+  errors: FieldErrors;
   disabled?: boolean;
 }
 
