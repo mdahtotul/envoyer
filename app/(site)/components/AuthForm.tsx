@@ -36,37 +36,60 @@ const AuthForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
-    try {
-      if (variant === "REGISTER") {
-        axios
-          .post("/api/register", data)
-          .catch(() => toast.error("Something went wrong!"));
-      }
-
-      if (variant === "LOGIN") {
-        // login
-        signIn("credentials", { ...data, redirect: false }).then((res) => {
+    if (variant === "REGISTER") {
+      axios
+        .post("/api/register", data)
+        .then(() =>
+          signIn("credentials", {
+            ...data,
+            redirect: false,
+          })
+        )
+        .then((res) => {
           if (res?.error) {
-            toast.error(res?.error);
-            return;
+            toast.error("Invalid credentials!");
           } else if (res?.ok) {
-            toast.success("Logged in successfully!");
+            toast.success("Successfully registered!");
+            // router.push("/conversations");
           }
-        });
-      }
-    } catch (err) {
-    } finally {
-      setIsLoading(false);
+        })
+        .catch(() => toast.error("Something went wrong!"))
+        .finally(() => setIsLoading(false));
+    }
+
+    if (variant === "LOGIN") {
+      signIn("credentials", {
+        ...data,
+        redirect: false,
+      })
+        .then((res) => {
+          if (res?.error) {
+            toast.error("Invalid credentials!");
+          } else if (res?.ok) {
+            toast.success("Successfully logged in!");
+            // router.push("/conversations");
+          }
+        })
+        .finally(() => setIsLoading(false));
     }
   };
 
   const socialAction = (action: string) => {
     setIsLoading(true);
 
-    // NextAuth social Sign In
+    signIn(action, { redirect: false })
+      .then((res) => {
+        if (res?.error) {
+          toast.error("Invalid credentials!");
+        } else if (res?.ok) {
+          toast.success("Successfully logged in!");
+          // router.push("/conversations");
+        }
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -103,7 +126,13 @@ const AuthForm = () => {
           />
 
           <div>
-            <Button disabled={isLoading} fullWidth type="submit">
+            <Button
+              loading={isLoading}
+              disabled={isLoading}
+              fullWidth
+              onClick={() => handleSubmit(onSubmit)}
+              type="submit"
+            >
               {variant === "LOGIN" ? "Sign In" : "register"}
             </Button>
           </div>
