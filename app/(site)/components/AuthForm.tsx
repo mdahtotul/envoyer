@@ -3,8 +3,9 @@
 import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
 import axios from "axios";
-import { signIn } from "next-auth/react";
-import { useCallback, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { BsGithub, BsGoogle } from "react-icons/bs";
@@ -13,8 +14,18 @@ import AuthSocialButton from "./AuthSocialButton";
 type Variant = "LOGIN" | "REGISTER";
 
 const AuthForm = () => {
+  const session = useSession();
+  const router = useRouter();
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      router.push("/users");
+      toast.success("Successfully logged in!");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
 
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") {
@@ -70,7 +81,7 @@ const AuthForm = () => {
             toast.error("Invalid credentials!");
           } else if (res?.ok) {
             toast.success("Successfully logged in!");
-            // router.push("/conversations");
+            router.push("/users");
           }
         })
         .finally(() => setIsLoading(false));
@@ -86,7 +97,7 @@ const AuthForm = () => {
           toast.error("Invalid credentials!");
         } else if (res?.ok) {
           toast.success("Successfully logged in!");
-          // router.push("/conversations");
+          router.push("/users");
         }
       })
       .finally(() => setIsLoading(false));
