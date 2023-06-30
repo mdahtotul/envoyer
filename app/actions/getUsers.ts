@@ -22,7 +22,7 @@ const getUsers = async () => {
 
     return users;
   } catch (err: any) {
-    console.error(err);
+    console.log("🚀 ~ file: getUsers.ts:25 ~ getUsers ~ err:", err);
     return [];
   }
 };
