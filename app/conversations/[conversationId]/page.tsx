@@ -3,6 +3,7 @@ import getMessages from "@/actions/getMessages";
 import EmptyState from "@/rootComponents/EmptyState";
 import Header from "./components/Header";
 import Body from "./components/Body";
+import MessageForm from "./components/MessageForm";
 
 interface IdParams {
   conversationId: string;
@@ -25,7 +26,8 @@ const ConversationId = async ({ params }: { params: IdParams }) => {
     <div className="lg:pl-80 h-full">
       <div className="h-full flex flex-col">
         <Header conversation={conversation} />
-        <Body messages={messages} />
+        <Body initialMessages={messages} />
+        <MessageForm />
       </div>
     </div>
   );
