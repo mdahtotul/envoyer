@@ -38,7 +38,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedConversation);
   } catch (error: any) {
-    console.log("🚀 ~ file: route.ts:11 ~ error:", error);
+    console.log("🚀 ~ file: route.ts:41 ~ error:", error);
     return new NextResponse("Internal server error", { status: 500 });
   }
 }
