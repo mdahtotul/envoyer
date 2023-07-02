@@ -23,7 +23,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({ isLast, data }) => {
     .filter((user) => user.email !== data?.sender?.email)
     .map((user) => user.name)
     .join(", ");
-  console.log("🚀 ~ file: MessageBox.tsx:19 ~ seenList:", seenList);
 
   const container = clsx(`flex gap-3 p-4`, isOwn && "justify-end");
 
