@@ -94,7 +94,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newConversation);
   } catch (err: any) {
-    console.log("🚀 ~ file: route.ts:8 ~ POST ~ err:", err);
+    console.log("🚀 ~ file: conversations.route.ts:8 ~ POST ~ err:", err);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
